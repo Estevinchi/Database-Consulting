@@ -43,6 +43,7 @@ Abrir en el navegador:
 2️⃣ Desde Railway
 
 > [Enlace Railway Database](https://database-consulting-production.up.railway.app/auth/)
+> User: Test Password: test
 
 
 ## 🗄️ Organización
