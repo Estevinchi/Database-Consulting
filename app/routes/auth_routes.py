@@ -7,6 +7,8 @@ from app.models.model_query import QueryModel
 
 from app.services.user_service import AuthService
 
+from app.routes.admin_routes import is_admin
+
 auth_bp = Blueprint("auth_bp", __name__, url_prefix="/auth")
 auth_service = AuthService()
 
@@ -28,7 +30,9 @@ def home():
 @auth_bp.route("/user/update/password", methods=['POST'])
 @login_required
 def update_password():
-    id=request.form.get('id')
+    if not is_admin():
+        flash("No tienes permisos de administrador.")
+        return redirect(url_for('auth_bp.home'))
     actual_password=request.form.get('actual_pswd')
     password = request.form.get('password')
     password_check = request.form.get('password_check')
@@ -51,6 +55,9 @@ def update_password():
 @auth_bp.route("/user")
 @login_required
 def user():
+    if not is_admin():
+        flash("No tienes permisos de administrador.")
+        return redirect(url_for('auth_bp.home'))
     return render_template('user.html')
 
 @auth_bp.route("/login", methods=['GET','POST'])
