@@ -5,8 +5,9 @@
 ![Pandas](https://img.shields.io/badge/Pandas-Data-orange)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-Frontend-purple)
 ![Auth](https://img.shields.io/badge/Auth-Login%20System-red)
-![Deploy](https://img.shields.io/badge/Deploy-Render-purple)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![Railway](https://img.shields.io/badge/Railway-7B3FE4?logo=railway&logoColor=white)](https://database-consulting-production.up.railway.app/auth/)
+
 
 
 # Database Consulting App
