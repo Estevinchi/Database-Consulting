@@ -1,0 +1,41 @@
+{%extends 'layout.html'%} {%block styles%}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='css/create_user.css')}}"
+/>
+{%endblock%} {%block favicon%}
+<link
+  rel="shortcut icon"
+  href="{{ url_for('static', filename='img/favicons/bbdd_edit.png') }}"
+  type="image/x-icon"
+/>
+{%endblock%} {%block title%} Create User | Database Example {%endblock%} {%block
+body%}
+<nav>
+  <ul>
+    <li>
+      <a href="{{url_for('auth_bp.home')}}">Home</a>
+    </li>
+    <li>
+      <a href="{{url_for('admin_bp.home_admin')}}">Admin</a>
+    </li>
+  </ul>
+</nav>
+{%with messages = get_flashed_messages()%} {%if messages%}
+<ul>
+  {%for message in messages%}
+  <li>{{ message }}</li>
+  {%endfor%}
+</ul>
+{%endif%} {%endwith%}
+<form action="{{url_for('admin_bp.create_user')}}" method="post">
+  <input name="username" placeholder="Nombre de usuario" type="text" required />
+  <input name="password" placeholder="Contraseña" type="password" required />
+  <div class="checkbox-container">
+    <label for="admin">Administrador</label>
+    <input type="checkbox" name="admin" value="True" />
+  </div>
+  <button type="submit">Registrar</button>
+  <a type="button" href="{{url_for('admin_bp.home_admin')}}">Cancelar</a>
+</form>
+{%endblock%}

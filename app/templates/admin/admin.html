@@ -1,0 +1,227 @@
+{%extends 'layout.html'%} {%block styles%}
+<link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}" />
+{%endblock%}
+
+{%block favicon%}
+<link
+  rel="shortcut icon"
+  href="{{ url_for('static', filename='img/favicons/bbdd_admin.png') }}"
+  type="image/x-icon"
+/>
+{%endblock%}
+
+{%block title%} Admin | Database Example {%endblock%}
+{%block body%}
+<nav>
+  <ul>
+    <li>
+      <a href="{{ url_for('auth_bp.home') }}">Inicio</a>
+    </li>
+
+    {% if current_user.admin %}
+    <li>
+      <a href="{{ url_for('admin_bp.home_admin') }}">Administrar</a>
+    </li>
+    {%endif%}
+    <li>
+      <a href="{{url_for('auth_bp.user')}}">Mi Perfil</a>
+    </li>
+    <li></li>
+  </ul>
+  <!-- Botón de importar Excel -->
+  <div class="btns-nav-right">
+    <div class="btn_import_container">
+      <button
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#importModal"
+      >
+        Importar Excel
+      </button>
+    </div>
+    <!-- Cerrar sesión -->
+    <form action="{{url_for('auth_bp.logout')}}" method="post">
+      <button type="submit">Cerrar sessión</button>
+    </form>
+  </div>
+</nav>
+
+<!-- Mostrar mesajes flash  -->
+{% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul>
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+{%if usuarios%}
+<div class="contenedor-usuarios">
+  <h1>Listado de usuarios</h1>
+  {%for usuario in usuarios%}
+  <div class="tarjeta-usuario">
+    <div class="admin-container">    
+      <h3 class="username-usuario">{{usuario.username}}</h3>
+      {%if usuario.admin == True%}
+      <p>Es administrador</p>
+      {%endif%}
+    </div>
+    <form
+      method="post"
+      action="{{url_for('admin_bp.delete_user',id=usuario['id'])}}"
+    >
+      <button
+        type="submit"
+        class="btnDeleteUser"
+        data-username-delete="{{usuario.username}}"
+      >
+        Eliminar
+      </button>
+    </form>
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+      data-user-id="{{ usuario.id }}"
+      data-username="{{ usuario.username }}"
+      data-admin="{{usuario.admin}}"
+    >
+      Editar Usuario
+    </button>
+  </div>
+  {%endfor%}
+</div>
+{%endif%}
+<a href="{{url_for('admin_bp.create_user')}}">Crear nuevo usuario</a>
+
+<!-- Modal del IMPORT -->
+<div
+  class="modal fade"
+  id="importModal"
+  tabindex="-1"
+  aria-labelledby="importModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="importModalLabel">
+          Importar Base de Datos
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="modal-body-import">
+        <form
+          id="excelForm"
+          action="{{url_for('admin_bp.upload_excel')}}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input type="file" name="file" accept=".xlsx, .xls" required />
+        </div>
+        <div class="modal-footer">
+            <button type="submit">Importar Excel</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para UPDATE -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          Nombre Usuario
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('admin_bp.update_user')}}">
+          <input type="number" name="id" hidden id="idUserUpdate"/>
+          <input type="text" name="username" id="usernameUpdate" required autocomplete/>
+          <label for="adminUpdate">Administrador</label>
+          <input type="checkbox" name="admin" id="adminUpdate" value="True" />
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+            Guardar
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const updateModal = document.getElementById("staticBackdrop");
+
+    updateModal.addEventListener("show.bs.modal", function (event) {
+      const button = event.relatedTarget;
+
+      const userId = button.getAttribute("data-user-id");
+      const username = button.getAttribute("data-username");
+      const admin = button.getAttribute("data-admin");
+
+      const modalTitle = updateModal.querySelector(".modal-title");
+      const inputId = updateModal.querySelector("#idUserUpdate");
+      const inputUsername = updateModal.querySelector("#usernameUpdate");
+      const adminCheckbox = updateModal.querySelector("#adminUpdate");
+
+      inputUsername.value = username;
+      inputId.value = userId;
+
+      if (admin == true) adminCheckbox.checked = true;
+      else if (admin == false) adminCheckbox.checked = false;
+
+      modalTitle.textContent = `Editando Usuario: ${username}`;
+    });
+
+    // Confirmación eliminar usuario
+    const deleteButtons = document.querySelectorAll(".btnDeleteUser");
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const nombre = btn.dataset.usernameDelete;
+
+        if (confirm(`¿Seguro que quieres eliminar "${nombre}"?`)) {
+          btn.closest("form").submit();
+        }
+      });
+    });
+  });
+</script>
+
+{%endblock%}

@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+{%block styles%}
+<link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}" />
+{%endblock%}
+
+{%block title%} Home | Database Example {%endblock%}
+
+{% block body %}
+
+<nav>
+  <ul>
+    <li>
+      <a href="{{ url_for('auth_bp.home') }}">Inicio</a>
+    </li>
+
+    {% if current_user.admin %}
+    <li>
+      <a href="{{ url_for('admin_bp.home_admin') }}">Administrar</a>
+    </li>
+    {%endif%}
+    <li>
+      <a href="{{url_for('auth_bp.user')}}">Mi Perfil</a>
+    </li>
+  </ul>
+  <div>
+    <h1>{{current_user.username}}</h1>
+    <form action="{{url_for('auth_bp.logout')}}" method="post">
+      <button type="submit">Cerrar sessión</button>
+    </form>
+  </div>
+</nav>
+
+<h2>Tabla de consultas</h2>
+{% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul>
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+
+<!-- Buscador avanzado -->
+<div>
+  <form method="get" action="{{url_for('query_bp.search_bar')}}" id="searchForm">
+    <!-- <label for=""></label> -->
+    <select name="level">
+      <option value="">Elige un nivel</option>
+      {%for nivel in niveles%}
+      <option value="{{nivel}}" {%if level_sel==nivel%} selected {%endif%}>{{nivel}}</option>
+      {%endfor%}
+    </select>
+    <select name="group">
+      <option value="">Elige un grupo</option>
+      {%for grupo in grupos%}
+      <option value="{{grupo}}" {%if grupo_sel==grupo%} selected {%endif%}>{{grupo}}</option>
+      {%endfor%}
+    </select>
+    <select name="city">
+      <option value="">Elige el municipio</option>
+      {%for municipio in municipios%}
+      <option value="{{municipio}}" {%if municipio_sel==municipio%} selected {%endif%}>{{municipio}}</option>
+      {%endfor%}
+    </select>
+    <input name="queryAn" type="text" placeholder="Buscador por anotacion" value="{{query}}" />
+    <input name="name" type="text" placeholder="Buscador por nombre" value="{{name}}">
+    <input name="last_name_1" type="text" placeholder="Primer apellido" value="{{last_name_1}}">
+    <input name="last_name_2" type="text" placeholder="Segundo Apellido" value="{{last_name_2}}">
+    <input name="mail" type="text" placeholder="Email" value="{{mail}}">
+    <input name="tel" type="number" placeholder="Número telefono" value="{{tel}}">
+    <div class="checkbox-container">
+      <label for="last_name_order">Ordenar por primer apellido</label>
+      <input type="checkbox" name="last_name_order" value="True" {%if order_by%}checked{%endif%}>
+    </div>
+
+    <!-- <a type="button" href="{{url_for('auth_bp.home')}}">Limpiar</a>
+    <button type="submit">Buscar</button> -->
+    
+    <a type="button" href="{{url_for('auth_bp.home')}}">Limpiar Formulario</a>
+    <button type="submit" name="action" value="search">Buscar</button>
+    <!-- <button type="submit" name="action" value="export">Exportar Búsqueda</button> -->
+     <!-- Botón de exportar a CSV -->
+    <div class="btn_export_container">
+      <button type="submit" name="action" value="export">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-table-export"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" /><path d="M3 10h18" /><path d="M10 3v18" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
+        Exportar a CSV
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Tabla de resultados -->
+{%if columnas and datos%}
+{%if results%}
+<p>Hay {{results}} entradas </p>
+{%endif%}
+<table class="table table-bordered table-striped mt-4">
+  <thead>
+    <tr>
+      {% for col in columnas %}
+      <th>{{ col }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for fila in datos %}
+    <tr>
+      {%for celda in fila%}
+      <td>
+        {% if fila[celda] is float %}
+        {{ "%.0f"|format(fila[celda]) }}
+        {%elif fila[celda].__class__.__name__ == "Timestamp" %}
+        {{ fila[celda].strftime('%d/%m/%Y') }}
+        {%else%}
+        {{fila[celda]}}
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{%else%}
+<p>No hay resultados con estos filtros.</p>
+{%endif%}
+
+<button id="goTopBtn" class="go-top-btn">▲</button>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const btn = document.getElementById("goTopBtn");
+  
+  if (btn) {
+    // Detectar scroll
+    const checkScroll = () => {
+      const scrolled = Math.max(
+        window.pageYOffset,
+        document.documentElement.scrollTop,
+        document.body.scrollTop
+      );
+      
+      if (scrolled > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    };
+    
+    // Escuchar eventos
+    window.addEventListener('scroll', checkScroll);
+    document.addEventListener('scroll', checkScroll);
+    setInterval(checkScroll, 200); // Fallback cada 200ms
+    
+    // Click
+    btn.onclick = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    
+    checkScroll(); // Check inicial
+  }
+</script>
+{% endblock %}

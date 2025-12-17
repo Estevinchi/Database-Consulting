@@ -1,0 +1,391 @@
+:root {
+  --primary: #38B5AD;
+  --primary-dark: #2a8a83;
+  --bg-main: #e8ecf3;
+  --shadow-light: #ffffff;
+  --shadow-dark: #b8bcc4;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --border-radius: 20px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #e8ecf3 0%, #dce2eb 100%);
+  background-attachment: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+html::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #e8ecf3 0%, #dce2eb 100%);
+  z-index: -2;
+}
+
+/* Formas orgánicas de fondo */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body::before {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--primary), #6dd5cd);
+  top: -200px;
+  right: -200px;
+  animation-delay: -5s;
+}
+
+body::after {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #60a5fa, var(--primary));
+  bottom: -150px;
+  left: -150px;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+/* Navegación */
+nav {
+  position: relative;
+  z-index: 10;
+  padding: 1.5rem 2rem;
+  background: var(--bg-main);
+  box-shadow: 
+    6px 6px 12px var(--shadow-dark),
+    -6px -6px 12px var(--shadow-light);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  margin-bottom: 2rem;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+nav ul li a {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 
+    4px 4px 8px var(--shadow-dark),
+    -4px -4px 8px var(--shadow-light);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+nav ul li a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(56, 181, 173, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+nav ul li a:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+nav ul li a:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 
+    6px 6px 12px var(--shadow-dark),
+    -6px -6px 12px var(--shadow-light);
+}
+
+nav ul li a:active {
+  transform: translateY(0);
+  box-shadow: 
+    inset 3px 3px 6px var(--shadow-dark),
+    inset -3px -3px 6px var(--shadow-light);
+}
+
+/* Formulario centrado */
+form {
+  position: relative;
+  z-index: 10;
+  max-width: 480px;
+  width: 90%;
+  margin: 5vh auto;
+  padding: 3rem;
+  background: var(--bg-main);
+  border-radius: var(--border-radius);
+  box-shadow: 
+    12px 12px 24px var(--shadow-dark),
+    -12px -12px 24px var(--shadow-light);
+  animation: slideIn 0.6s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Inputs de texto y contraseña */
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  background: var(--bg-main);
+  border: none;
+  border-radius: 14px;
+  padding: 1.2rem 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-dark),
+    inset -4px -4px 8px var(--shadow-light);
+  transition: var(--transition);
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  outline: none;
+  box-shadow: 
+    inset 6px 6px 12px var(--shadow-dark),
+    inset -6px -6px 12px var(--shadow-light),
+    0 0 0 3px rgba(56, 181, 173, 0.1);
+}
+
+form input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* Contenedor checkbox + label */
+.checkbox-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+}
+
+form label[for="admin"] {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+/* Checkbox estilizado */
+form input[type="checkbox"] {
+  appearance: none;
+  width: 60px;
+  height: 30px;
+  background: var(--bg-main);
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-dark),
+    inset -4px -4px 8px var(--shadow-light);
+  transition: var(--transition);
+  flex-shrink: 0;
+  margin: 0;
+}
+
+form input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+  box-shadow: 
+    3px 3px 6px var(--shadow-dark),
+    -3px -3px 6px var(--shadow-light);
+  transition: var(--transition);
+}
+
+form input[type="checkbox"]:checked {
+  background: rgba(56, 181, 173, 0.2);
+}
+
+form input[type="checkbox"]:checked::before {
+  left: 33px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+/* Botones */
+form button,
+form a[type="button"] {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none !important;
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  box-shadow: 
+    6px 6px 12px var(--shadow-dark),
+    -6px -6px 12px var(--shadow-light);
+  transition: var(--transition);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+form button::before,
+form a[type="button"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+form button:hover::before,
+form a[type="button"]:hover::before {
+  width: 400px;
+  height: 300px;
+}
+
+form button:hover,
+form a[type="button"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    8px 8px 16px var(--shadow-dark),
+    -8px -8px 16px var(--shadow-light);
+}
+
+form button:active,
+form a[type="button"]:active {
+  transform: translateY(0);
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-dark),
+    inset -4px -4px 8px var(--shadow-light);
+}
+
+/* Botón cancelar */
+form a[type="button"] {
+  background: linear-gradient(135deg, #94a3b8, #64748b);
+  margin-top: 0.5rem;
+}
+
+/* Títulos si se añaden */
+form h1,
+form h2 {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem;
+    border-radius: 0;
+  }
+  
+  form {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+    width: calc(100% - 2rem);
+  }
+  
+  body::before,
+  body::after {
+    opacity: 0.1;
+  }
+}
+
+/* Efecto de profundidad adicional en el formulario */
+form::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--shadow-light), var(--shadow-dark));
+  border-radius: var(--border-radius);
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(10px);
+}

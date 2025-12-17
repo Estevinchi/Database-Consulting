@@ -1,0 +1,29 @@
+{%extends 'layout.html'%} {%block styles%}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{%endblock%} {%block favicon%}
+<link
+  rel="shortcut icon"
+  href="{{ url_for('static', filename='img/favicons/bbdd_error.png') }}"
+  type="image/x-icon"
+/>
+{%endblock%} {%block body%}
+
+<main style="text-align: center; padding: 4rem 2rem">
+  <h1>405</h1>
+  <h2>Vaya, ¿Has intentado alguna cosa rara?</h2>
+  <p>
+    Seguramente la hemos liado nosotros, pero no te preocupes, puedes volver al
+    inicio. (O eso espero...)
+  </p>
+  <a
+    href="{{ url_for('auth_bp.home') }}"
+    type="button"
+    class="btn_export_container"
+    id="link-inicio"
+    >"Volver" al inicio</a
+  >
+</main>
+{%endblock%}

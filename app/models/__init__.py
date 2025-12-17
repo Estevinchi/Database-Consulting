@@ -1,0 +1,1 @@
+# Estructura de los usuarios/consultas

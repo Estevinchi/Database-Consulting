@@ -1,0 +1,28 @@
+{%extends 'layout.html'%} {%block styles%}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{%endblock%} {%block favicon%}
+<link
+  rel="shortcut icon"
+  href="{{ url_for('static', filename='img/favicons/bbdd_error.png') }}"
+  type="image/x-icon"
+/>
+{%endblock%} {%block body%}
+
+<main style="text-align: center; padding: 4rem 2rem">
+  <h1>404</h1>
+  <h2>Oops! La página que buscas no existe.</h2>
+  <p>
+    Es posible que la URL esté mal escrita o que la página haya sido eliminada.
+  </p>
+  <a
+    href="{{ url_for('auth_bp.home') }}"
+    type="button"
+    class="btn_export_container"
+    id="link-inicio"
+    >Volver al inicio</a
+  >
+</main>
+{%endblock%}
