@@ -40,9 +40,9 @@ Abrir en el navegador:
 
 > http://localhost:5000
 
-2️⃣ Desde Render
+2️⃣ Desde Railway
 
-> 
+> [Enlace Railway Database](https://database-consulting-production.up.railway.app/auth/)
 
 
 ## 🗄️ Organización
@@ -87,6 +87,8 @@ Eliminar usuarios
 Cargar archivos Excel para actualizar la base de datos principal
 
 Gestión completa del sistema
+
+Cambio de contraseña
 
 >👤 Rol Usuario
 
