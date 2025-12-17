@@ -18,10 +18,10 @@
     <li>
       <a href="{{ url_for('admin_bp.home_admin') }}">Administrar</a>
     </li>
-    {%endif%}
     <li>
       <a href="{{url_for('auth_bp.user')}}">Mi Perfil</a>
     </li>
+    {%endif%}
   </ul>
   <form action="{{url_for('auth_bp.logout')}}" method="post">
     <button type="submit">Cerrar sessión</button>
