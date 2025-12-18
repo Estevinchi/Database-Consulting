@@ -60,7 +60,7 @@ def search_bar():
         datos = df.to_dict(orient="records")
         niveles = QueryModel.get_niveles()
         results=len(datos)
-        return render_template('home.html', datos=datos, columnas=columnas, query=query, niveles=niveles, level_sel=level_sel, results=results, name=name, last_name_1=last_name_1, last_name_2=last_name_2, order_by = last_name_order, grupos=grupos, grupo_sel=group, mail=mail, municipios=municipios, municipio_sel=municipio_sel)
+        return render_template('home.html', datos=datos, columnas=columnas, query=query, niveles=niveles, level_sel=level_sel, results=results, name=name, last_name_1=last_name_1, last_name_2=last_name_2, order_by = last_name_order, grupos=grupos, grupo_sel=group, mail=mail, municipios=municipios, municipio_sel=municipio_sel, tel=tel)
     except Exception:
         flash(f"Error al cargar el excel", "error")
         return redirect(url_for('auth_bp.home'))

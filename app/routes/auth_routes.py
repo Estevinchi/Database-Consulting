@@ -21,7 +21,8 @@ def home():
         columnas = list(tabla.columns)
         datos = tabla.to_dict(orient="records")
         grupos = QueryModel.get_grupos()
-        return render_template('home.html',columnas=columnas, datos=datos, niveles=niveles, grupos=grupos)
+        ciudades = QueryModel.get_municipios()
+        return render_template('home.html',columnas=columnas, datos=datos, niveles=niveles, grupos=grupos,municipios=ciudades)
     except Exception:
         flash(f"Error al cargar la tabla excel", "error")
         return redirect(url_for('admin_bp.home_admin'))
